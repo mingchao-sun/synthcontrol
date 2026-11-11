@@ -1,0 +1,19 @@
+Package: synthcontrol
+Type: Package
+Title: Synthetic Control Method for jamovi
+Version: 1.0.0
+Author: Mingchao Sun
+Maintainer: Mingchao Sun <mingchao.sun@hotmail.com>
+Description: Synthetic control method (Abadie, Diamond and Hainmueller, 2010) for
+    comparative case studies with panel data, implemented as a jamovi module.
+    Donor weights are estimated by constrained quadratic programming, with
+    predictor weights chosen by nested optimisation. Inference uses in-space
+    placebo tests with one-sided (RMSPE ratio) or two-sided (absolute average
+    gap) permutation p-values. Robustness checks cover leave-one-out, treatment
+    timing, pre-period length and in-time placebo.
+License: GPL-3
+Encoding: UTF-8
+Imports:
+    jmvcore (>= 2.3.4),
+    R6,
+    quadprog

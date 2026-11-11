@@ -1,0 +1,21 @@
+---
+title: Synthetic Control
+name: synthcontrol
+version: 1.0.0
+jms: '1.0'
+authors:
+    - Mingchao Sun
+maintainer: Mingchao Sun <mingchao.sun@hotmail.com>
+date: '2026-11-12'
+type: R
+description: >-
+    Synthetic control method for comparative case studies with panel data.
+    Estimates donor weights, reports pre/post fit, and runs in-space placebo tests.
+analyses:
+    - name: scm
+      title: Synthetic Control
+      menuGroup: Causal
+      menuSubgroup: Panel
+      menuTitle: Synthetic Control
+      menuSubtitle: Abadie et al. (2010)
+...

@@ -1,0 +1,164 @@
+name: scm
+title: Synthetic Control
+jus: '3.0'
+stage: 0
+compilerMode: tame
+children:
+    - type: VariableSupplier
+      persistentItems: false
+      stretchFactor: 1
+      children:
+          - type: TargetLayoutBox
+            label: Outcome
+            children:
+                - type: VariablesListBox
+                  name: outcome
+                  isTarget: true
+                  maxItemCount: 1
+          - type: TargetLayoutBox
+            label: Unit
+            children:
+                - type: VariablesListBox
+                  name: unit
+                  isTarget: true
+                  maxItemCount: 1
+          - type: TargetLayoutBox
+            label: Time
+            children:
+                - type: VariablesListBox
+                  name: time
+                  isTarget: true
+                  maxItemCount: 1
+          - type: TargetLayoutBox
+            label: Predictors
+            children:
+                - type: VariablesListBox
+                  name: predictors
+                  isTarget: true
+    - type: LevelSelector
+      name: treatedUnit
+      label: Treated unit
+    - type: TextBox
+      name: treatmentTime
+      label: First treated period
+      format: number
+    - type: TextBox
+      name: donorExclude
+      label: Exclude donors
+      format: string
+    - type: CheckBox
+      name: showHelp
+      label: Show method notes in results
+    - type: CollapseBox
+      label: Estimation
+      collapsed: false
+      children:
+          - type: LayoutBox
+            children:
+                - type: ComboBox
+                  name: predictorStat
+                - type: TextBox
+                  name: seed
+                  label: Random seed
+                  format: number
+                - type: TextBox
+                  name: optStarts
+                  label: Random starts
+                  format: number
+    - type: CollapseBox
+      label: Placebo test
+      collapsed: false
+      children:
+          - type: LayoutBox
+            children:
+                - type: CheckBox
+                  name: placebo
+                - type: ComboBox
+                  name: pValueMethod
+                - type: TextBox
+                  name: placeboPreRatio
+                  label: Pre-fit filter (max RMSPE ratio)
+                  format: number
+    - type: CollapseBox
+      label: Robustness checks
+      collapsed: false
+      children:
+          - type: LayoutBox
+            style: inline
+            children:
+                - type: LayoutBox
+                  cell: {column: 0, row: 0}
+                  children:
+                      - type: CheckBox
+                        name: looCheck
+                - type: LayoutBox
+                  cell: {column: 1, row: 0}
+                  stretchFactor: 1
+                  children:
+                      - type: TextBox
+                        name: looSubset
+                        stretchFactor: 1
+                        label: Leave-one-out subset
+                        format: string
+                - type: LayoutBox
+                  cell: {column: 0, row: 1}
+                  children:
+                      - type: CheckBox
+                        name: looFig
+                - type: LayoutBox
+                  cell: {column: 0, row: 2}
+                  children:
+                      - type: CheckBox
+                        name: timingCheck
+                - type: LayoutBox
+                  cell: {column: 1, row: 2}
+                  stretchFactor: 1
+                  children:
+                      - type: TextBox
+                        name: timingOffsets
+                        stretchFactor: 1
+                        label: Timing offsets (years)
+                        format: string
+                - type: LayoutBox
+                  cell: {column: 0, row: 3}
+                  children:
+                      - type: CheckBox
+                        name: timingFig
+                - type: LayoutBox
+                  cell: {column: 0, row: 4}
+                  children:
+                      - type: CheckBox
+                        name: preLengthCheck
+                - type: LayoutBox
+                  cell: {column: 1, row: 4}
+                  stretchFactor: 1
+                  children:
+                      - type: TextBox
+                        name: preLengthDrops
+                        stretchFactor: 1
+                        label: Pre-period years dropped
+                        format: string
+                - type: LayoutBox
+                  cell: {column: 0, row: 5}
+                  children:
+                      - type: CheckBox
+                        name: preLengthFig
+                - type: LayoutBox
+                  cell: {column: 0, row: 6}
+                  children:
+                      - type: CheckBox
+                        name: intimeCheck
+                - type: LayoutBox
+                  cell: {column: 1, row: 6}
+                  stretchFactor: 1
+                  children:
+                      - type: TextBox
+                        name: intimeOffsets
+                        stretchFactor: 1
+                        label: Years before treatment
+                        format: string
+                - type: LayoutBox
+                  cell: {column: 0, row: 7}
+                  children:
+                      - type: CheckBox
+                        name: intimeFig

@@ -1,0 +1,175 @@
+---
+name: scm
+title: Synthetic Control
+jas: '1.2'
+version: '1.0.0'
+menuGroup: Causal
+menuSubgroup: Panel
+menuTitle: Synthetic Control
+menuSubtitle: Abadie et al. (2010)
+
+options:
+    - name: data
+      type: Data
+
+    - name: outcome
+      title: Outcome
+      type: Variable
+      suggested:
+          - continuous
+      permitted:
+          - numeric
+
+    - name: unit
+      title: Unit
+      type: Variable
+      description: Identifier of the cross-sectional unit (e.g. state or country)
+      permitted:
+          - factor
+          - id
+
+    - name: time
+      title: Time
+      type: Variable
+      description: Time period (numeric year or period index)
+      permitted:
+          - numeric
+          - factor
+          - id
+
+    - name: treatedUnit
+      title: Treated unit
+      type: Level
+      variable: (unit)
+
+    - name: treatmentTime
+      title: First treated period
+      type: Number
+      default: 2000
+      min: 0
+
+    - name: predictors
+      title: Predictors (optional)
+      type: Variables
+      permitted:
+          - numeric
+      description: Covariates averaged over the pre-treatment period. If empty, pre-treatment outcomes are used as predictors.
+
+    - name: placebo
+      title: In-space placebo test
+      type: Bool
+      default: false
+
+    - name: placeboPreRatio
+      title: Pre-fit filter (max pre-RMSPE ratio)
+      type: Number
+      default: 2
+      min: 1
+      description: Placebos whose pre-treatment RMSPE exceeds this multiple of the treated unit's are excluded from the filtered p-value and the gap plot.
+
+    - name: looCheck
+      title: Leave-one-out table
+      type: Bool
+      default: false
+
+    - name: looFig
+      title: Leave-one-out figure
+      type: Bool
+      default: false
+
+    - name: timingCheck
+      title: Treatment timing table
+      type: Bool
+      default: false
+
+    - name: timingFig
+      title: Treatment timing figure
+      type: Bool
+      default: false
+
+    - name: preLengthCheck
+      title: Pre-period length table
+      type: Bool
+      default: false
+
+    - name: preLengthFig
+      title: Pre-period length figure
+      type: Bool
+      default: false
+
+    - name: intimeCheck
+      title: In-time placebo table
+      type: Bool
+      default: false
+
+    - name: intimeFig
+      title: In-time placebo figure
+      type: Bool
+      default: false
+
+    - name: donorExclude
+      title: Exclude donors (comma-separated)
+      type: String
+      default: ""
+      description: Units to remove from the donor pool in all analyses, e.g. states with confounding policies.
+
+    - name: optStarts
+      title: Random starts for optimisation
+      type: Number
+      default: 5
+      min: 1
+      max: 50
+
+    - name: seed
+      title: Random seed
+      type: Number
+      default: 1
+      min: 1
+
+    - name: timingOffsets
+      title: Timing offsets (years)
+      type: String
+      default: "-2,-1,1,2"
+
+    - name: preLengthDrops
+      title: Pre-period years dropped
+      type: String
+      default: "0,2,4,6"
+
+    - name: intimeOffsets
+      title: In-time placebo offsets (years before treatment)
+      type: String
+      default: "-6,-4,-2"
+
+    - name: looSubset
+      title: Leave-one-out subset (comma-separated; empty = all donors)
+      type: String
+      default: ""
+
+    - name: predictorStat
+      title: Predictor summary (pre-treatment)
+      type: List
+      options:
+          - name: mean
+            title: Mean
+          - name: median
+            title: Median
+          - name: last
+            title: Last pre-treatment value
+      default: mean
+
+    - name: showHelp
+      title: Show method notes in results
+      type: Bool
+      default: false
+
+    - name: pValueMethod
+      title: Permutation p-value statistic
+      type: List
+      options:
+          - name: ratio
+            title: RMSPE ratio (one-sided)
+          - name: att
+            title: Absolute average gap (two-sided)
+      default: ratio
+...

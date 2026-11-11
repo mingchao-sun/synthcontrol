@@ -1,0 +1,183 @@
+---
+name: scm
+title: Synthetic Control
+jrs: '1.1'
+
+items:
+    - name: helpText
+      title: Method notes
+      type: Html
+      visible: (showHelp)
+
+    - name: notes
+      title: Notes
+      type: Html
+      visible: (outcome)
+
+    - name: summary
+      title: Pre- and post-treatment fit
+      type: Table
+      visible: (outcome)
+      columns:
+          - name: metric
+            title: Metric
+            type: text
+          - name: value
+            title: Value
+            type: number
+            format: dp:3
+
+    - name: weights
+      title: Donor weights
+      type: Table
+      visible: (outcome)
+      columns:
+          - name: unit
+            title: Donor unit
+            type: text
+          - name: weight
+            title: Weight
+            type: number
+            format: dp:4
+
+    - name: balance
+      title: Predictor balance
+      type: Table
+      visible: (outcome)
+      columns:
+          - name: predictor
+            title: Predictor
+            type: text
+          - name: treated
+            title: Treated
+            type: number
+            format: dp:3
+          - name: synthetic
+            title: Synthetic
+            type: number
+            format: dp:3
+
+    - name: pathsPlot
+      title: Treated vs synthetic
+      type: Image
+      width: 600
+      height: 400
+      renderFun: .plotPaths
+      visible: (outcome)
+
+    - name: gapsPlot
+      title: Gap in outcome
+      type: Image
+      width: 600
+      height: 400
+      renderFun: .plotGaps
+      visible: (outcome)
+
+    - name: weightsPlot
+      title: Donor weights
+      type: Image
+      width: 600
+      height: 400
+      renderFun: .plotWeights
+      visible: (outcome)
+
+    - name: looTable
+      title: Leave-one-out donor robustness
+      type: Table
+      visible: (looCheck)
+      columns:
+          - name: removed
+            title: Removed donor
+            type: text
+          - name: att
+            title: Average post-treatment gap
+            type: number
+            format: dp:3
+          - name: ratio
+            title: Post / pre RMSPE ratio
+            type: number
+            format: dp:2
+
+    - name: looPlot
+      title: Leave-one-out ATT
+      type: Image
+      width: 600
+      height: 500
+      renderFun: .plotLoo
+      visible: (looFig)
+
+    - name: timingTable
+      title: Treatment timing sensitivity
+      type: Table
+      visible: (timingCheck)
+      columns:
+          - name: scenario
+            title: Scenario
+            type: text
+          - name: att
+            title: Average post-treatment gap
+            type: number
+            format: dp:3
+          - name: ratio
+            title: Post / pre RMSPE ratio
+            type: number
+            format: dp:2
+
+    - name: timingPlot
+      title: Treatment timing sensitivity
+      type: Image
+      width: 600
+      height: 400
+      renderFun: .plotTiming
+      visible: (timingFig)
+
+    - name: preLengthTable
+      title: Pre-period length sensitivity
+      type: Table
+      visible: (preLengthCheck)
+      columns:
+          - name: scenario
+            title: Scenario
+            type: text
+          - name: att
+            title: Average post-treatment gap
+            type: number
+            format: dp:3
+          - name: ratio
+            title: Post / pre RMSPE ratio
+            type: number
+            format: dp:2
+
+    - name: preLengthPlot
+      title: Pre-period length sensitivity
+      type: Image
+      width: 600
+      height: 400
+      renderFun: .plotPreLength
+      visible: (preLengthFig)
+
+    - name: intimeTable
+      title: In-time placebo
+      type: Table
+      visible: (intimeCheck)
+      columns:
+          - name: scenario
+            title: Scenario
+            type: text
+          - name: att
+            title: Average post-treatment gap
+            type: number
+            format: dp:3
+          - name: ratio
+            title: Post / pre RMSPE ratio
+            type: number
+            format: dp:2
+
+    - name: intimePlot
+      title: In-time placebo
+      type: Image
+      width: 600
+      height: 400
+      renderFun: .plotIntime
+      visible: (intimeFig)
+...
