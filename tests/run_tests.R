@@ -38,12 +38,21 @@ yrs <- as.integer(d$Year)
 fp <- scm_fit(Yp, "California", pre = which(yrs <= 1988), post = which(yrs >= 1989), starts = 5)
 ok(abs(sum(fp$weights_all) - 1) < 1e-10, "Prop 99 weights sum to one")
 ok(fp$ratio > 5, sprintf("post/pre RMSPE ratio large for Prop 99 (%.2f)", fp$ratio))
-# Objective value from independent SLSQP check (scipy) at the same V: 0.0333512639
-# Independent check: with the same v, scipy SLSQP gives objective 0.0333512639 (see M1 log)
+# Optimality of the donor weights for the returned V (KKT conditions of the QP).
+# The predictor-weight optimum is not unique (it depends on the random starts), so
+# the check uses the donor weights' own first-order conditions, not a fixed value.
 Xs <- (Yp[which(yrs <= 1988), ] - rowMeans(Yp[which(yrs <= 1988), ])) / apply(Yp[which(yrs <= 1988), ], 1, sd)
 dn <- setdiff(colnames(Yp), "California")
-obj_p <- sum(fp$v * (Xs[, "California"] - Xs[, dn] %*% fp$weights_all[dn])^2)
-ok(abs(obj_p - 0.0333512639) < 1e-6, sprintf("QP objective matches SLSQP reference (diff %.2e)", obj_p - 0.0333512639))
+w <- fp$weights_all[dn]
+Xd <- Xs[, dn, drop = FALSE]
+resid <- Xs[, "California"] - Xd %*% w
+grad <- as.numeric(-2 * crossprod(Xd, fp$v * resid))
+active <- w > 1e-6
+lam <- mean(grad[active])
+tol <- 1e-4 * max(1, abs(lam))
+ok(length(which(active)) > 0 && max(abs(grad[active] - lam)) < tol,
+   "KKT: gradient is equal across donors with positive weight")
+ok(all(grad[!active] >= lam - tol), "KKT: donors with zero weight have no improving direction")
 ok(fp$weights_all[["Utah"]] > 0.3, "Utah has the largest weight (matches Abadie et al., 2010 ranking)")
 
 cat("6. Placebo p-value is a valid probability\n")
