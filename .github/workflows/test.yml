@@ -23,7 +23,9 @@ jobs:
             any::yaml
 
       - name: Check required packages
-        run: Rscript -e 'for (p in c("quadprog","ggplot2","testthat","withr","R6","yaml")) if (!requireNamespace(p, quietly = TRUE)) stop("missing package: ", p)'
+        run: |
+          Rscript -e 'for (p in c("quadprog", "ggplot2", "testthat", "withr", "R6", "yaml")) if (!requireNamespace(p, quietly = TRUE)) stop("missing package: ", p)'
 
       - name: Run test suite (testthat)
-        run: Rscript tests/run_all.R
+        run: |
+          Rscript tests/run_all.R
