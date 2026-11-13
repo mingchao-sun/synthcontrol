@@ -35,130 +35,112 @@ children:
                 - type: VariablesListBox
                   name: predictors
                   isTarget: true
-    - type: LevelSelector
-      name: treatedUnit
-      label: Treated unit
-    - type: TextBox
-      name: treatmentTime
-      label: First treated period
-      format: number
-    - type: TextBox
-      name: donorExclude
-      label: Exclude donors
-      format: string
-    - type: CheckBox
-      name: showHelp
-      label: Show method notes in results
-    - type: CollapseBox
-      label: Estimation
-      collapsed: false
+    - type: LayoutBox
+      margin: large
       children:
-          - type: LayoutBox
-            children:
-                - type: ComboBox
-                  name: predictorStat
-                - type: TextBox
-                  name: seed
-                  label: Random seed
-                  format: number
-                - type: TextBox
-                  name: optStarts
-                  label: Random starts
-                  format: number
-    - type: CollapseBox
-      label: Placebo test
-      collapsed: false
-      children:
-          - type: LayoutBox
-            children:
-                - type: CheckBox
-                  name: placebo
-                - type: ComboBox
-                  name: pValueMethod
-                - type: TextBox
-                  name: placeboPreRatio
-                  label: Pre-fit filter (max RMSPE ratio)
-                  format: number
-    - type: CollapseBox
-      label: Robustness checks
-      collapsed: false
-      children:
-          - type: LayoutBox
-            style: inline
-            children:
-                - type: LayoutBox
-                  cell: {column: 0, row: 0}
-                  children:
-                      - type: CheckBox
-                        name: looCheck
-                - type: LayoutBox
-                  cell: {column: 1, row: 0}
-                  stretchFactor: 1
-                  children:
-                      - type: TextBox
-                        name: looSubset
-                        stretchFactor: 1
-                        label: Leave-one-out subset
-                        format: string
-                - type: LayoutBox
-                  cell: {column: 0, row: 1}
-                  children:
-                      - type: CheckBox
-                        name: looFig
-                - type: LayoutBox
-                  cell: {column: 0, row: 2}
-                  children:
-                      - type: CheckBox
-                        name: timingCheck
-                - type: LayoutBox
-                  cell: {column: 1, row: 2}
-                  stretchFactor: 1
-                  children:
-                      - type: TextBox
-                        name: timingOffsets
-                        stretchFactor: 1
-                        label: Timing offsets (years)
-                        format: string
-                - type: LayoutBox
-                  cell: {column: 0, row: 3}
-                  children:
-                      - type: CheckBox
-                        name: timingFig
-                - type: LayoutBox
-                  cell: {column: 0, row: 4}
-                  children:
-                      - type: CheckBox
-                        name: preLengthCheck
-                - type: LayoutBox
-                  cell: {column: 1, row: 4}
-                  stretchFactor: 1
-                  children:
-                      - type: TextBox
-                        name: preLengthDrops
-                        stretchFactor: 1
-                        label: Pre-period years dropped
-                        format: string
-                - type: LayoutBox
-                  cell: {column: 0, row: 5}
-                  children:
-                      - type: CheckBox
-                        name: preLengthFig
-                - type: LayoutBox
-                  cell: {column: 0, row: 6}
-                  children:
-                      - type: CheckBox
-                        name: intimeCheck
-                - type: LayoutBox
-                  cell: {column: 1, row: 6}
-                  stretchFactor: 1
-                  children:
-                      - type: TextBox
-                        name: intimeOffsets
-                        stretchFactor: 1
-                        label: Years before treatment
-                        format: string
-                - type: LayoutBox
-                  cell: {column: 0, row: 7}
-                  children:
-                      - type: CheckBox
-                        name: intimeFig
+        - type: LevelSelector
+          name: treatedUnit
+          label: Treated unit
+        - type: TextBox
+          name: treatmentTime
+          label: First treated period
+          format: number
+        - type: TextBox
+          name: donorExclude
+          label: Exclude donors
+          format: string
+        - type: CollapseBox
+          label: Estimation
+          collapsed: false
+          children:
+              - type: LayoutBox
+                children:
+                    - type: ComboBox
+                      name: predictorStat
+                    - type: TextBox
+                      name: seed
+                      label: Random seed
+                      format: number
+                    - type: TextBox
+                      name: optStarts
+                      label: Random starts
+                      format: number
+        - type: CollapseBox
+          label: Placebo Test
+          collapsed: true
+          children:
+              - type: LayoutBox
+                children:
+                    - type: CheckBox
+                      name: placebo
+                    - type: ComboBox
+                      name: pValueMethod
+                      enable: (placebo)
+                    - type: TextBox
+                      name: placeboPreRatio
+                      label: Pre-fit filter (max RMSPE ratio)
+                      format: number
+                      enable: (placebo)
+        - type: CollapseBox
+          label: Robustness Checks
+          collapsed: true
+          children:
+              - type: LayoutBox
+                style: inline
+                children:
+                    - type: CheckBox
+                      name: looCheck
+                    - type: TextBox
+                      name: looSubset
+                      label: Subset
+                      format: string
+                      stretchFactor: 1
+                      enable: (looCheck || looFig)
+              - type: CheckBox
+                name: looFig
+              - type: LayoutBox
+                style: inline
+                children:
+                    - type: CheckBox
+                      name: timingCheck
+                    - type: TextBox
+                      name: timingOffsets
+                      label: Offsets (years)
+                      format: string
+                      stretchFactor: 1
+                      enable: (timingCheck || timingFig)
+              - type: CheckBox
+                name: timingFig
+              - type: LayoutBox
+                style: inline
+                children:
+                    - type: CheckBox
+                      name: preLengthCheck
+                    - type: TextBox
+                      name: preLengthDrops
+                      label: Years dropped
+                      format: string
+                      stretchFactor: 1
+                      enable: (preLengthCheck || preLengthFig)
+              - type: CheckBox
+                name: preLengthFig
+              - type: LayoutBox
+                style: inline
+                children:
+                    - type: CheckBox
+                      name: intimeCheck
+                    - type: TextBox
+                      name: intimeOffsets
+                      label: Years before treatment
+                      format: string
+                      stretchFactor: 1
+                      enable: (intimeCheck || intimeFig)
+              - type: CheckBox
+                name: intimeFig
+        - type: CollapseBox
+          label: Output
+          collapsed: true
+          children:
+              - type: CheckBox
+                name: showHelp
+                label: Method notes

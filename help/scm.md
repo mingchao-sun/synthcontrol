@@ -1,6 +1,6 @@
 # Synthetic Control
 
-Estimates the effect of a treatment on one unit (for example, a state that passed a policy) by comparing its outcome path with a weighted combination of untreated donor units. The method follows Abadie, Diamond and Hainmueller (2010).
+Estimates the effect of a treatment on one unit (for example, a state that passed a policy) by comparing its outcome path with a weighted combination of untreated donor units. The method follows Abadie, Diamond and Hainmueller (2010). The references are listed under *References* in the results.
 
 ## Data
 
@@ -59,19 +59,3 @@ Each check can produce a table, a figure, or both.
 - Predictor-weight optimisation can take a minute or more with many random starts and many donors.
 - Permutation p-values have a minimum attainable value of 1 divided by the number of placebo units plus one. With few donors, the test has low power.
 - Results depend on the pre-treatment fit. Check the paths plot and the pre-treatment RMSPE before interpreting the post-treatment gap.
-
-## References
-
-Abadie, A., Diamond, A., and Hainmueller, J. (2010). Synthetic control methods for comparative case studies: estimating the effect of California's tobacco control program. *Journal of the American Statistical Association*, 105(490), 493–505.
-
-Abadie, A., Diamond, A., and Hainmueller, J. (2011). Synth: An R package for synthetic control methods in comparative case studies. *Journal of Statistical Software*, 42(13), 1–17.
-
-Abadie, A., Diamond, A., and Hainmueller, J. (2015). Comparative politics and the synthetic control method. *American Journal of Political Science*, 59(2), 495–510.
-
-Abadie, A. (2021). Using synthetic controls: Feasibility, data requirements, and methodological aspects. *Journal of Economic Literature*, 59(2), 391–425.
-
-Abadie, A., and Gardeazabal, J. (2003). The economic costs of conflict: A case study of the Basque Country. *American Economic Review*, 93(1), 113–132.
-
-Ferman, B., and Pinto, C. (2021). Synthetic controls with imperfect pretreatment fit. *Quantitative Economics*, 12(4), 1197–1221.
-
-Firpo, S., and Possebom, V. (2018). Synthetic control method: Inference, sensitivity analysis and confidence sets. *Journal of Causal Inference*, 6(2).

@@ -115,14 +115,14 @@ options:
 
     - name: optStarts
       title: Random starts for optimisation
-      type: Number
+      type: Integer
       default: 5
       min: 1
       max: 50
 
     - name: seed
       title: Random seed
-      type: Number
+      type: Integer
       default: 1
       min: 1
 
@@ -159,7 +159,7 @@ options:
       default: mean
 
     - name: showHelp
-      title: Show method notes in results
+      title: Method notes
       type: Bool
       default: false
 

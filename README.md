@@ -29,18 +29,16 @@ time (years or consecutive periods) and a numeric outcome. The example data
 
 ## Tests
 
-Run from the module folder (the tests read `data/` by relative path):
+Run from the module folder (the test suite lives in `tests/testthat/`, needs the packages `testthat`, `withr`, `ggplot2`, `quadprog`, `R6` and `yaml`):
 
 ```r
-Rscript tests/run_tests.R
-Rscript tests/test_robustness.R
-Rscript tests/test_stability.R
+Rscript tests/run_all.R
 ```
 
 ## Help and limitations
 
 Method notes are in `help/scm.md`, and can be displayed in the results with
-the option *Show method notes in results*.
+the option *Method notes* (in the Output box).
 
 Donor weights are not unique when there are few predictors relative to the
 number of donors. Check the number of non-zero weights and the pre-treatment

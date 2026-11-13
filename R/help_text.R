@@ -1,8 +1,8 @@
-# Method notes shown in the results when 'Show method notes' is ticked.
+# Method notes shown in the results when 'Method notes' is ticked.
 # Generated from help/scm.md; regenerate this file if the help text changes.
 scm_help_html <- function() r"---(
 <h1>Synthetic Control</h1>
-<p>Estimates the effect of a treatment on one unit (for example, a state that passed a policy) by comparing its outcome path with a weighted combination of untreated donor units. The method follows Abadie, Diamond and Hainmueller (2010).</p>
+<p>Estimates the effect of a treatment on one unit (for example, a state that passed a policy) by comparing its outcome path with a weighted combination of untreated donor units. The method follows Abadie, Diamond and Hainmueller (2010). The references are listed under <em>References</em> in the results.</p>
 <h2>Data</h2>
 <p>The data must be a <strong>balanced panel in long format</strong>: one row per unit and period. Every unit needs an outcome value in every period.</p>
 <ul>
@@ -56,12 +56,4 @@ scm_help_html <- function() r"---(
 <li>Permutation p-values have a minimum attainable value of 1 divided by the number of placebo units plus one. With few donors, the test has low power.</li>
 <li>Results depend on the pre-treatment fit. Check the paths plot and the pre-treatment RMSPE before interpreting the post-treatment gap.</li>
 </ul>
-<h2>References</h2>
-<p>Abadie, A., Diamond, A., and Hainmueller, J. (2010). Synthetic control methods for comparative case studies: estimating the effect of California's tobacco control program. <em>Journal of the American Statistical Association</em>, 105(490), 493–505.</p>
-<p>Abadie, A., Diamond, A., and Hainmueller, J. (2011). Synth: An R package for synthetic control methods in comparative case studies. <em>Journal of Statistical Software</em>, 42(13), 1–17.</p>
-<p>Abadie, A., Diamond, A., and Hainmueller, J. (2015). Comparative politics and the synthetic control method. <em>American Journal of Political Science</em>, 59(2), 495–510.</p>
-<p>Abadie, A. (2021). Using synthetic controls: Feasibility, data requirements, and methodological aspects. <em>Journal of Economic Literature</em>, 59(2), 391–425.</p>
-<p>Abadie, A., and Gardeazabal, J. (2003). The economic costs of conflict: A case study of the Basque Country. <em>American Economic Review</em>, 93(1), 113–132.</p>
-<p>Ferman, B., and Pinto, C. (2021). Synthetic controls with imperfect pretreatment fit. <em>Quantitative Economics</em>, 12(4), 1197–1221.</p>
-<p>Firpo, S., and Possebom, V. (2018). Synthetic control method: Inference, sensitivity analysis and confidence sets. <em>Journal of Causal Inference</em>, 6(2).</p>
 )---"

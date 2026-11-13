@@ -11,6 +11,10 @@ type: R
 description: >-
     Synthetic control method for comparative case studies with panel data.
     Estimates donor weights, reports pre/post fit, and runs in-space placebo tests.
+datasets:
+    - name: California Proposition 99
+      path: prop99_long.csv
+      description: Cigarette sales per capita, 39 US states, 1970-2000
 analyses:
     - name: scm
       title: Synthetic Control

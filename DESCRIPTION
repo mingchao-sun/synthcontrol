@@ -15,5 +15,6 @@ License: GPL-3
 Encoding: UTF-8
 Imports:
     jmvcore (>= 2.3.4),
+    ggplot2,
     R6,
     quadprog

@@ -12,12 +12,24 @@ items:
     - name: notes
       title: Notes
       type: Html
-      visible: (outcome)
+      visible: true
 
     - name: summary
       title: Pre- and post-treatment fit
       type: Table
       visible: (outcome)
+      refs: abadie2010
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
       columns:
           - name: metric
             title: Metric
@@ -25,12 +37,56 @@ items:
           - name: value
             title: Value
             type: number
-            format: dp:3
+
+    - name: permTable
+      title: Permutation test
+      type: Table
+      visible: (placebo)
+      refs: abadie2010
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - placebo
+        - placeboPreRatio
+        - pValueMethod
+      columns:
+          - name: sample
+            title: Placebo set
+            type: text
+          - name: n
+            title: Placebos
+            type: integer
+          - name: p
+            title: p-value
+            type: number
+            format: zto,pvalue
 
     - name: weights
       title: Donor weights
       type: Table
       visible: (outcome)
+      refs:
+          - abadie2010
+          - quadprog
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
       columns:
           - name: unit
             title: Donor unit
@@ -38,12 +94,22 @@ items:
           - name: weight
             title: Weight
             type: number
-            format: dp:4
 
     - name: balance
       title: Predictor balance
       type: Table
       visible: (outcome)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
       columns:
           - name: predictor
             title: Predictor
@@ -51,11 +117,9 @@ items:
           - name: treated
             title: Treated
             type: number
-            format: dp:3
           - name: synthetic
             title: Synthetic
             type: number
-            format: dp:3
 
     - name: pathsPlot
       title: Treated vs synthetic
@@ -64,6 +128,17 @@ items:
       height: 400
       renderFun: .plotPaths
       visible: (outcome)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
 
     - name: gapsPlot
       title: Gap in outcome
@@ -72,6 +147,20 @@ items:
       height: 400
       renderFun: .plotGaps
       visible: (outcome)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - placebo
+        - placeboPreRatio
+        - pValueMethod
 
     - name: weightsPlot
       title: Donor weights
@@ -80,11 +169,34 @@ items:
       height: 400
       renderFun: .plotWeights
       visible: (outcome)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
 
     - name: looTable
       title: Leave-one-out donor robustness
       type: Table
       visible: (looCheck)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - looSubset
       columns:
           - name: removed
             title: Removed donor
@@ -92,11 +204,9 @@ items:
           - name: att
             title: Average post-treatment gap
             type: number
-            format: dp:3
           - name: ratio
             title: Post / pre RMSPE ratio
             type: number
-            format: dp:2
 
     - name: looPlot
       title: Leave-one-out ATT
@@ -105,11 +215,35 @@ items:
       height: 500
       renderFun: .plotLoo
       visible: (looFig)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - looSubset
 
     - name: timingTable
       title: Treatment timing sensitivity
       type: Table
       visible: (timingCheck)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - timingOffsets
       columns:
           - name: scenario
             title: Scenario
@@ -117,11 +251,9 @@ items:
           - name: att
             title: Average post-treatment gap
             type: number
-            format: dp:3
           - name: ratio
             title: Post / pre RMSPE ratio
             type: number
-            format: dp:2
 
     - name: timingPlot
       title: Treatment timing sensitivity
@@ -130,11 +262,35 @@ items:
       height: 400
       renderFun: .plotTiming
       visible: (timingFig)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - timingOffsets
 
     - name: preLengthTable
       title: Pre-period length sensitivity
       type: Table
       visible: (preLengthCheck)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - preLengthDrops
       columns:
           - name: scenario
             title: Scenario
@@ -142,11 +298,9 @@ items:
           - name: att
             title: Average post-treatment gap
             type: number
-            format: dp:3
           - name: ratio
             title: Post / pre RMSPE ratio
             type: number
-            format: dp:2
 
     - name: preLengthPlot
       title: Pre-period length sensitivity
@@ -155,11 +309,35 @@ items:
       height: 400
       renderFun: .plotPreLength
       visible: (preLengthFig)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - preLengthDrops
 
     - name: intimeTable
       title: In-time placebo
       type: Table
       visible: (intimeCheck)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - intimeOffsets
       columns:
           - name: scenario
             title: Scenario
@@ -167,11 +345,9 @@ items:
           - name: att
             title: Average post-treatment gap
             type: number
-            format: dp:3
           - name: ratio
             title: Post / pre RMSPE ratio
             type: number
-            format: dp:2
 
     - name: intimePlot
       title: In-time placebo
@@ -180,4 +356,106 @@ items:
       height: 400
       renderFun: .plotIntime
       visible: (intimeFig)
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - intimeOffsets
+
+    # ---- hidden results that hold reusable computations (not shown) ----
+    - name: placeboState
+      title: Placebo fits (internal)
+      type: Image
+      renderFun: .plotNone
+      visible: false
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+
+    - name: looState
+      title: Leave-one-out fits (internal)
+      type: Image
+      renderFun: .plotNone
+      visible: false
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - looSubset
+
+    - name: timingState
+      title: Timing fits (internal)
+      type: Image
+      renderFun: .plotNone
+      visible: false
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - timingOffsets
+
+    - name: preLengthState
+      title: Pre-period fits (internal)
+      type: Image
+      renderFun: .plotNone
+      visible: false
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - preLengthDrops
+
+    - name: intimeState
+      title: In-time fits (internal)
+      type: Image
+      renderFun: .plotNone
+      visible: false
+      clearWith:
+        - outcome
+        - unit
+        - time
+        - treatedUnit
+        - treatmentTime
+        - predictors
+        - predictorStat
+        - donorExclude
+        - optStarts
+        - seed
+        - intimeOffsets
 ...

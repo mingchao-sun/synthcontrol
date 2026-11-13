@@ -1,74 +1,74 @@
 # plots.R ------------------------------------------------------------------
-# Base-graphics plotting functions for synthetic control results.
-# Each function draws on the current device so it can be used both inside
-# jamovi (Image renderers) and in standalone scripts.
+# ggplot2 figures for synthetic control results. Each function takes the slim
+# state built in engine.R (scm_paths_state(), scm_gaps_state(), ...) and returns
+# a ggplot object. In jamovi the render function adds the user's theme
+# (ggtheme) and prints the plot; titles come from the results heading.
 
-scm_plot_paths <- function(fit, ylab = "Outcome", main = "Treated vs synthetic") {
-    yrs <- as.numeric(names(fit$synth))
-    rng <- range(c(fit$treated_y, fit$synth))
-    graphics::plot(yrs, fit$treated_y, type = "l", lwd = 2, col = "black",
-                   ylim = rng, xlab = "Time", ylab = ylab, main = main, las = 1)
-    graphics::lines(yrs, fit$synth, lwd = 2, lty = 2, col = "#1f77b4")
-    graphics::abline(v = yrs[fit$post[1]] - 0.5, lty = 3, col = "grey40")
-    graphics::legend("bottomleft", legend = c("Treated", "Synthetic"),
-                     lty = c(1, 2), lwd = 2, col = c("black", "#1f77b4"),
-                     bty = "n")
-    invisible(NULL)
+scm_plot_paths <- function(st, ylab = "Outcome") {
+    n <- length(st$years)
+    df <- data.frame(year = rep(st$years, 2), value = c(st$treated, st$synth),
+                     series = factor(rep(c("Treated", "Synthetic"), each = n),
+                                     levels = c("Treated", "Synthetic")))
+    ggplot2::ggplot(df, ggplot2::aes(x = year, y = value, linetype = series)) +
+        ggplot2::geom_line(linewidth = 0.8) +
+        ggplot2::geom_vline(xintercept = st$years[st$post1] - 0.5, linetype = "dotted", colour = "grey40") +
+        ggplot2::labs(x = "Time", y = ylab, linetype = NULL) +
+        ggplot2::theme(legend.position = "bottom")
 }
 
-# max_pre_ratio: only show placebos whose pre-treatment RMSPE is at most
-# max_pre_ratio times the treated unit's (Abadie et al., 2010 practice).
-scm_plot_gaps <- function(fit, placebo = NULL, max_pre_ratio = 2,
-                          ylab = "Gap (treated - synthetic)", main = "Gap in outcome") {
-    yrs <- as.numeric(names(fit$synth))
-    keep <- rep(TRUE, 0)
-    G <- NULL
-    if (!is.null(placebo)) {
-        keep <- placebo$placebo_pre_rmspe <= max_pre_ratio * fit$rmspe_pre
-        G <- placebo$gaps[, keep, drop = FALSE]
+# Gap plot. Placebo gaps are drawn only for placebos whose pre-treatment RMSPE
+# is at most k times the treated unit's (Abadie et al., 2010 practice).
+scm_plot_gaps <- function(st, ylab = "Gap (treated - synthetic)") {
+    p <- ggplot2::ggplot()
+    cap <- NULL
+    if (!is.null(st$gaps)) {
+        keep <- st$pre_rmspe <= st$k * st$rmspe_pre
+        G <- st$gaps[, keep, drop = FALSE]
+        if (ncol(G) > 0) {
+            gl <- data.frame(year = rep(st$years, ncol(G)), gap = as.vector(G),
+                             unit = rep(seq_len(ncol(G)), each = length(st$years)))
+            p <- p + ggplot2::geom_line(data = gl,
+                        ggplot2::aes(x = year, y = gap, group = unit),
+                        colour = "grey70", linewidth = 0.4)
+        }
+        cap <- sprintf("Grey lines: placebo gaps with pre-fit RMSPE <= %g x treated (%d shown).",
+                       st$k, ncol(G))
     }
-    rng <- range(c(fit$gap, as.vector(G)), na.rm = TRUE)
-    graphics::plot(NA, xlim = range(yrs), ylim = rng, xlab = "Time", ylab = ylab,
-                   main = main, las = 1)
-    if (!is.null(G)) {
-        for (j in seq_len(ncol(G)))
-            graphics::lines(yrs, G[, j], col = "grey75", lwd = 1)
-    }
-    graphics::lines(yrs, fit$gap, lwd = 2, col = "black")
-    graphics::abline(h = 0, col = "grey40")
-    graphics::abline(v = yrs[fit$post[1]] - 0.5, lty = 3, col = "grey40")
-    if (!is.null(placebo))
-        graphics::legend("bottomleft", legend = c("Treated", "Placebo (pre-fit ok)"),
-                         lwd = c(2, 1), col = c("black", "grey75"), bty = "n")
-    invisible(NULL)
+    tr <- data.frame(year = st$years, gap = st$gap)
+    p + ggplot2::geom_line(data = tr, ggplot2::aes(x = year, y = gap), linewidth = 0.9) +
+        ggplot2::geom_hline(yintercept = 0, colour = "grey40") +
+        ggplot2::geom_vline(xintercept = st$years[st$post1] - 0.5, linetype = "dotted", colour = "grey40") +
+        ggplot2::labs(x = "Time", y = ylab, caption = cap)
 }
 
-scm_plot_weights <- function(fit, top = 15, main = "Donor weights") {
-    w <- sort(fit$weights, decreasing = TRUE)
-    w <- utils::head(w, top)
-    graphics::par(mar = c(4, 8, 3, 1))
-    graphics::barplot(rev(w), horiz = TRUE, las = 1, col = "#1f77b4", border = NA,
-                      xlab = "Weight", main = main, xlim = c(0, max(w) * 1.1))
-    invisible(NULL)
+# Donor weights as horizontal bars (weights = named numeric vector).
+scm_plot_weights <- function(weights, top = 15) {
+    w <- utils::head(sort(weights, decreasing = TRUE), top)
+    df <- data.frame(unit = factor(names(w), levels = rev(names(w))), weight = as.numeric(w))
+    ggplot2::ggplot(df, ggplot2::aes(x = weight, y = unit)) +
+        ggplot2::geom_col(fill = "#1f77b4") +
+        ggplot2::labs(x = "Weight", y = NULL)
 }
 
 # Leave-one-out dot plot: ATT when each donor is removed, with the full-sample ATT.
-scm_plot_loo <- function(loo, att_main, main = "Leave-one-out ATT") {
+scm_plot_loo <- function(loo, att_main) {
     d <- loo[order(loo$att), ]
-    graphics::par(mar = c(4, 9, 3, 1))
-    graphics::dotchart(d$att, labels = d$removed, cex = 0.7, pch = 19,
-                       xlab = "Average post-treatment gap", main = main)
-    graphics::abline(v = att_main, lty = 2, col = "#d62728")
-    graphics::abline(v = 0, col = "grey60")
-    invisible(NULL)
+    d$removed <- factor(d$removed, levels = d$removed)
+    ggplot2::ggplot(d, ggplot2::aes(x = att, y = removed)) +
+        ggplot2::geom_vline(xintercept = 0, colour = "grey60") +
+        ggplot2::geom_vline(xintercept = att_main, linetype = "dashed", colour = "#d62728") +
+        ggplot2::geom_point() +
+        ggplot2::labs(x = "Average post-treatment gap", y = NULL,
+                      caption = "Dashed line: full-sample ATT.")
 }
 
 # Scenario plot for timing, pre-period length and in-time placebo checks.
-scm_plot_scenario <- function(df, att_main, xlab, main) {
-    graphics::plot(df$x, df$att, type = "b", pch = 19, col = "black",
-                   ylim = range(c(df$att, att_main, 0)),
-                   xlab = xlab, ylab = "Average post-treatment gap", main = main, las = 1)
-    graphics::abline(h = att_main, lty = 2, col = "#d62728")
-    graphics::abline(h = 0, col = "grey60")
-    invisible(NULL)
+scm_plot_scenario <- function(df, att_main, xlab) {
+    ggplot2::ggplot(df, ggplot2::aes(x = x, y = att)) +
+        ggplot2::geom_hline(yintercept = 0, colour = "grey60") +
+        ggplot2::geom_hline(yintercept = att_main, linetype = "dashed", colour = "#d62728") +
+        ggplot2::geom_line() +
+        ggplot2::geom_point() +
+        ggplot2::labs(x = xlab, y = "Average post-treatment gap",
+                      caption = "Dashed line: full-sample ATT.")
 }
